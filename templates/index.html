@@ -62,4 +62,82 @@
     </section>
 </main>
 
+<script>
+  const chatWindow = document.querySelector('.h-\\[420px\\]');
+  const input = document.querySelector('input[placeholder="Ask Cypher..."]');
+  const sendBtn = document.querySelector('button:has(.material-symbols-outlined)');
+  const chips = document.querySelectorAll('.flex.flex-wrap.gap-2 button');
+  let history = [];
+
+  function addMessage(text, role) {
+    const isBot = role === 'assistant';
+    const wrapper = document.createElement('div');
+    wrapper.className = `flex flex-col gap-1 ${isBot ? 'items-start max-w-[85%]' : 'items-end max-w-[85%] self-end ml-auto'}`;
+
+    const label = document.createElement('span');
+    label.className = 'font-label-caps text-[10px] ' + (isBot ? 'text-primary-container' : 'text-on-surface-variant');
+    label.textContent = isBot ? 'CYPHER' : 'YOU';
+
+    const bubble = document.createElement('div');
+    bubble.className = isBot
+      ? 'bg-surface-variant border border-outline-variant rounded p-3 font-code-sm text-code-sm text-on-surface whitespace-pre-wrap'
+      : 'bg-primary-container text-background rounded p-3 font-code-sm text-code-sm whitespace-pre-wrap';
+    bubble.textContent = text;
+
+    wrapper.appendChild(label);
+    wrapper.appendChild(bubble);
+    chatWindow.appendChild(wrapper);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+    return bubble;
+  }
+
+  function addTyping() {
+    const wrapper = document.createElement('div');
+    wrapper.id = 'typing';
+    wrapper.className = 'flex flex-col gap-1 items-start max-w-[85%]';
+    wrapper.innerHTML = `
+      <span class="font-label-caps text-[10px] text-primary-container">CYPHER</span>
+      <div class="bg-surface-variant border border-outline-variant rounded p-3 font-code-sm text-code-sm text-on-surface-variant italic">
+        Analyzing...
+      </div>`;
+    chatWindow.appendChild(wrapper);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
+
+  function removeTyping() {
+    document.getElementById('typing')?.remove();
+  }
+
+  async function sendMessage(text) {
+    text = text || input.value.trim();
+    if (!text) return;
+
+    input.value = '';
+    addMessage(text, 'user');
+    history.push({ role: 'user', content: text });
+    addTyping();
+
+    try {
+      const res = await fetch('/chat/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, history: history.slice(0, -1) })
+      });
+      const data = await res.json();
+      removeTyping();
+
+      const reply = data.reply || 'Error: no response received.';
+      addMessage(reply, 'assistant');
+      history.push({ role: 'assistant', content: reply });
+    } catch (e) {
+      removeTyping();
+      addMessage('Connection error. Check your server.', 'assistant');
+    }
+  }
+
+  sendBtn.addEventListener('click', () => sendMessage());
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
+  chips.forEach(chip => chip.addEventListener('click', () => sendMessage(chip.textContent.trim())));
+</script>
+
 {% endblock body %}
