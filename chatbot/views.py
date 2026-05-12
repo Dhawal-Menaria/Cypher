@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
-import google.generativeai as genai     
+from groq import Groq 
 
 CYPHER_PROMPT = """
 You are Cypher, an AI cybersecurity assistant.
@@ -99,29 +99,26 @@ def chat(request):
         if not user_message:
             return JsonResponse({'error': 'Empty message'}, status=400)
 
-        # Configure Gemini
-        genai.configure(api_key=settings.GEMINI_API_KEY)
-        model = genai.GenerativeModel(
-            model_name="gemini-1.5-flash",
-            system_instruction=CYPHER_PROMPT
+        from groq import Groq
+
+        client = Groq(api_key=settings.GROQ_API_KEY)
+
+        messages = [{"role": "system", "content": CYPHER_PROMPT}]
+
+        for msg in history[-10:]:
+            messages.append({"role": msg['role'], "content": msg['content']})
+
+        messages.append({"role": "user", "content": user_message})
+
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=messages,
+            max_tokens=400,
+            temperature=0.7,
         )
 
-        # Convert history to Gemini format
-        # Gemini uses "user" and "model" (not "assistant")
-        gemini_history = []
-        for msg in history[-10:]:
-            role = "user" if msg['role'] == "user" else "model"
-            gemini_history.append({
-                "role": role,
-                "parts": [msg['content']]
-            })
-
-        # Start chat with history, send current message
-        chat_session = model.start_chat(history=gemini_history)
-        response = chat_session.send_message(user_message)
-
         return JsonResponse({
-            'reply': response.text,
+            'reply': response.choices[0].message.content,
             'status': 'ok'
         })
 
