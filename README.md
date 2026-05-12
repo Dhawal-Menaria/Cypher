@@ -3,7 +3,7 @@
 > A real-time cybersecurity intelligence platform powered by AI. Get instant answers on vulnerabilities, CVEs, security best practices, and the latest threat news — all in one place.
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue?style=flat-square&logo=python)
-![Django](https://img.shields.io/badge/Django-4.2-green?style=flat-square&logo=django)
+![Django](https://img.shields.io/badge/Django-6.0-green?style=flat-square&logo=django)
 ![AI](https://img.shields.io/badge/AI-Llama_3.3_70B-orange?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-purple?style=flat-square)
 
@@ -11,13 +11,13 @@
 
 ## 🖥️ Live Demo
 
-> **[cypher-demo.up.railway.app](https://cypher-skjc.onrender.com)** ← replace with your live URL after deployment
+**[cypher-skjc.onrender.com](https://cypher-skjc.onrender.com)**
 
 ---
 
 ## 📸 Preview
 
-<!-- Add a screenshot here after deployment -->
+<!-- After deployment, save a screenshot as screenshot.png in root and uncomment below -->
 <!-- ![Cypher Screenshot](screenshot.png) -->
 
 ---
@@ -36,10 +36,10 @@
 
 | Layer | Technology |
 |---|---|
-| Backend | Django 4.2 |
+| Backend | Django 6.0 |
 | AI Model | Llama 3.3 70B via Groq API |
 | Frontend | HTML, Tailwind CSS, Vanilla JS |
-| Deployment | Railway |
+| Deployment | Render |
 
 ---
 
@@ -66,7 +66,7 @@ pip install -r requirements.txt
 
 # 4. Create .env file
 cp .env.example .env
-# Then open .env and add your keys
+# Open .env and add your keys
 
 # 5. Run migrations
 python manage.py migrate
@@ -122,24 +122,22 @@ Cypher/
 │   └── index.html      # Main page (news + chat)
 ├── manage.py
 ├── requirements.txt
-└── .env                # Your API keys (never commit this)
+├── .env.example        # Environment variable template
+└── .gitignore
 ```
 
 ---
 
-## 🌐 Deploy to Railway (Free)
+## 🌐 Deploy to Render (Free)
 
-```bash
-# 1. Push your code to GitHub
+1. Push your code to GitHub
+2. Go to [render.com](https://render.com) → New → Web Service → Connect your repo
+3. Set build command: `pip install -r requirements.txt`
+4. Set start command: `gunicorn cypher.wsgi`
+5. Add environment variables: `GROQ_API_KEY`, `DJANGO_SECRET_KEY`, `DEBUG=False`
+6. Deploy
 
-# 2. Go to railway.app → New Project → Deploy from GitHub repo
-
-# 3. Add environment variables in Railway dashboard:
-#    GROQ_API_KEY, DJANGO_SECRET_KEY, DEBUG=False
-
-# 4. Add a Procfile in root:
-#    web: gunicorn cypher.wsgi
-```
+> 💡 Use an uptime bot like [UptimeRobot](https://uptimerobot.com) (free) to ping your URL every 5 minutes and prevent Render's free tier from spinning down.
 
 ---
 
@@ -147,11 +145,10 @@ Cypher/
 
 **Dhawal Menaria** — Django & AI Integration Developer
 
-[![Upwork](https://img.shields.io/badge/Hire_on-Upwork-green?style=flat-square)](https://upwork.com)
 [![GitHub](https://img.shields.io/badge/GitHub-Dhawal--Menaria-black?style=flat-square&logo=github)](https://github.com/Dhawal-Menaria)
 
 ---
 
 ## 📄 License
 
-MIT License — free to use, modify, and distribute.
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
