@@ -11,7 +11,7 @@
 
 ## 🖥️ Live Demo
 
-> **[cypher-demo.up.railway.app](https://cypher-demo.up.railway.app)** ← replace with your live URL after deployment
+> **[cypher-demo.up.railway.app](https://cypher-skjc.onrender.com)** ← replace with your live URL after deployment
 
 ---
 
