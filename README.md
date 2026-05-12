@@ -17,8 +17,7 @@
 
 ## 📸 Preview
 
-<!-- After deployment, save a screenshot as screenshot.png in root and uncomment below -->
-<!-- ![Cypher Screenshot](screenshot.png) -->
+![Cypher Screenshot](screenshot.png)
 
 ---
 
