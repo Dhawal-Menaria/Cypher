@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block body %}
+<main class="flex-1 pt-[88px] pb-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto w-full flex flex-col gap-stack-lg lg:gap-16">
+    <!-- LATEST THREATS SECTION -->
+    <section class="flex flex-col gap-stack-md">
+        <h2 class="font-label-caps text-status-lg text-primary-container">// LATEST THREATS</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-stack-md">
+            {% for threat in threats %}
+            <!-- Threat Card -->
+            <article class="bg-surface-container-low border border-outline-variant rounded p-stack-md flex flex-col gap-stack-md hover:border-primary-container border-l-2 hover:border-l-primary-container transition-all group relative">
+                <div class="absolute inset-0 bg-primary-container opacity-0 group-hover:opacity-5 transition-opacity rounded pointer-events-none"></div>
+                <div class="flex justify-between items-start">
+                    <span class="font-code-sm text-code-sm text-on-surface-variant">{{ threat.source }} · {{ threat.time_ago }}</span>
+                    <span class="font-label-caps text-[10px] px-1.5 py-0.5 rounded {{ threat.badge_classes }}">{{ threat.badge_type }}</span>
+                </div>
+                <h3 class="font-headline-md text-headline-md text-on-surface line-clamp-2">{{ threat.title }}</h3>
+                <a class="font-code-sm text-code-sm text-primary-container hover:underline mt-auto flex items-center gap-1 w-fit" href="{{ threat.read_more }}">Read more <span class="material-symbols-outlined text-[14px]">arrow_forward</span></a>
+            </article>
+            {% endfor %}
+        </div>
+        <div class="flex items-center gap-2 font-code-sm text-code-sm text-on-surface-variant mt-2">
+            <span class="material-symbols-outlined text-[16px]">sync</span>
+            <span>Refreshed 2 mins ago</span>
+        </div>
+    </section>
+
+    
+    <!-- ASK CYPHER SECTION -->
+    <section class="flex flex-col gap-stack-md items-center w-full">
+        <div class="w-full max-w-[760px] flex flex-col gap-stack-md">
+            <h2 class="font-label-caps text-status-lg text-primary-container w-full text-left">// ASK CYPHER</h2>
+            <div class="w-full bg-surface-container-low border border-outline-variant rounded flex flex-col overflow-hidden relative">
+                <!-- Chat Window -->
+                <div class="h-[420px] overflow-y-auto p-stack-md flex flex-col gap-stack-md scrollbar-hide">
+                    <!-- Bot Message -->
+                    <div class="flex flex-col gap-1 items-start max-w-[85%]">
+                        <span class="font-label-caps text-[10px] text-primary-container">CYPHER</span>
+                        <div class="bg-surface-variant border border-outline-variant rounded p-3 font-code-sm text-code-sm text-on-surface">
+                            <span class="blinking-cursor">CYPHER ONLINE. Ask me anything about cybersecurity — vulnerabilities, CVEs, best practices, or how to secure your code.</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Input Area -->
+                <div class="p-stack-md border-t border-outline-variant bg-surface flex flex-col gap-stack-sm">
+                    <!-- Chips -->
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        <button class="font-code-sm text-[12px] text-primary-container border border-primary-container/50 bg-primary-container/10 px-3 py-1 rounded hover:bg-primary-container/20 transition-colors">What is SQL injection?</button>
+                        <button class="font-code-sm text-[12px] text-primary-container border border-primary-container/50 bg-primary-container/10 px-3 py-1 rounded hover:bg-primary-container/20 transition-colors">Explain OWASP Top 10</button>
+                        <button class="font-code-sm text-[12px] text-primary-container border border-primary-container/50 bg-primary-container/10 px-3 py-1 rounded hover:bg-primary-container/20 transition-colors">How do I secure a REST API?</button>
+                    </div>
+                    <div class="flex gap-2">
+                        <input class="flex-1 bg-background border border-outline-variant rounded px-3 py-2 font-code-sm text-code-sm text-on-surface focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container/50 placeholder-on-surface-variant/50" placeholder="Ask Cypher..." type="text"/>
+                        <button class="bg-primary-container text-background font-label-caps text-label-caps px-4 py-2 rounded hover:brightness-110 transition-all flex items-center gap-1 active:scale-95 shadow-[0_0_10px_rgba(0,255,157,0.2)]">
+                            SEND <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                        </button>
+                    </div>
+                    <p class="font-code-sm text-[10px] text-on-surface-variant text-center mt-1">Cypher is an AI assistant and may generate incorrect information. Always verify critical security intel.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock body %}
